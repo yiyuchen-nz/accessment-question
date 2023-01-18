@@ -15,15 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRoute = void 0;
 const express_1 = __importDefault(require("express"));
 const api_1 = require("../api");
-//import request from "superagent";
 exports.postRoute = express_1.default.Router();
 exports.postRoute.post('/api/location', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const location = req.body;
-        console.log(location);
-        const weather = yield (0, api_1.getWeather)(location);
-        console.log(weather);
-        //res.send(JSON.stringify(location))
+        const data = yield (0, api_1.getWeather)(location);
+        const weather = data.body;
+        res.send(JSON.stringify(weather));
     }
     // Question: better way than using type 'any'?
     catch (error) {

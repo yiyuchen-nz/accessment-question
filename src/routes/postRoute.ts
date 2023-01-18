@@ -1,20 +1,16 @@
 import express, {Router, Request, Response} from "express";
 import { getWeather } from "../api";
-//import request from "superagent";
+
 
 export const postRoute:Router = express.Router()
 
-postRoute.post('/api/location', async(req: Request, res: Response) => {
+postRoute.post('/api/location', async (req: Request, res: Response) => {
   
   try{
     const location = req.body
-    console.log(location)
-    const weather = await getWeather(location)
-
-    console.log(weather)
-    //res.send(JSON.stringify(location))
-
-
+    const data = await getWeather(location)
+    const weather = data.body
+    res.send(JSON.stringify(weather))
 
     
   }

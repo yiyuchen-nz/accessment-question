@@ -1,13 +1,14 @@
-import request from "superagent"
+import request, { SuperAgentRequest } from "superagent"
 require("dotenv").config();
+
+type dataType = { lat: string; lon: string }
 
 const key= process.env.API_KEY
 
-export async function getWeather( data:{ lat: string; lon: string }){
+export function getWeather( data:dataType):SuperAgentRequest{
 
-    return await request.get(
-        `http://api.openweathermap.org/data/2.5/weather?lat=&${data.lat}&lon=${data.lon}&appid=${key}`
+   return request.get(
+        `http://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${key}`
     )
-
     
 }
