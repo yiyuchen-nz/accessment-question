@@ -1,17 +1,19 @@
 import express, {Router, Request, Response} from "express";
-import { getWeather } from "../api";
+
 
 
 export const postRoute:Router = express.Router()
+export const locationMap = new Map();
 
 postRoute.post('/api/location', async (req: Request, res: Response) => {
   
   try{
+    
     const location = req.body
-    const data = await getWeather(location)
-    const weather = data.body
-    res.send(JSON.stringify(weather))
-
+    locationMap.set(req.ip,location)
+    //console.log("locationmap", JSON.stringify(locationMap.get("location1")))
+    
+    res.send({message: "Your location has been stored."})
     
   }
   // Question: better way than using type 'any'?

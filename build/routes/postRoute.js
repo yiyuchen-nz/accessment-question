@@ -12,16 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postRoute = void 0;
+exports.locationMap = exports.postRoute = void 0;
 const express_1 = __importDefault(require("express"));
-const api_1 = require("../api");
 exports.postRoute = express_1.default.Router();
+exports.locationMap = new Map();
 exports.postRoute.post('/api/location', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const location = req.body;
-        const data = yield (0, api_1.getWeather)(location);
-        const weather = data.body;
-        res.send(JSON.stringify(weather));
+        exports.locationMap.set(req.ip, location);
+        //console.log("locationmap", JSON.stringify(locationMap.get("location1")))
+        res.send({ message: "Your location has been stored." });
     }
     // Question: better way than using type 'any'?
     catch (error) {
