@@ -1,23 +1,13 @@
 import request from "superagent"
-
 require("dotenv").config();
 
-const key:string|undefined = process.env.API_KEY || undefined
+const key= process.env.API_KEY
 
-export function getWeather(input: { lat: string; lon: string }){
+export async function getWeather( data:{ lat: string; lon: string }){
 
-    return request
-    .get(
-    `http://api.openweathermap.org/data/2.5/weather?lat=&${input.lat}&lon=${input.lon}&appid=${key}`
+    return await request.get(
+        `http://api.openweathermap.org/data/2.5/weather?lat=&${data.lat}&lon=${data.lon}&appid=${key}`
     )
-    .then(
-        response => {
-            return response.body
-        }
-    )
-    .catch(
-        err => {
-            console.error(err)
-        });
+
     
 }

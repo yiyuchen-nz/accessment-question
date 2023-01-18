@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { routes } from "./routes";
 
 
-const app:Application = express();
+const app = express();
 const port:number =  3000;
 
 app.use(express.json())
