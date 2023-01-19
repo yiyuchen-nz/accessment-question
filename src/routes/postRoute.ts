@@ -11,8 +11,6 @@ postRoute.post('/api/location', async (req: Request, res: Response) => {
     
     const location = req.body
     locationMap.set(req.ip,location)
-    //console.log("locationmap", JSON.stringify(locationMap.get("location1")))
-    
     res.send({message: "Your location has been stored."})
     
   }

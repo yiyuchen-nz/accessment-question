@@ -20,7 +20,6 @@ exports.postRoute.post('/api/location', (req, res) => __awaiter(void 0, void 0, 
     try {
         const location = req.body;
         exports.locationMap.set(req.ip, location);
-        //console.log("locationmap", JSON.stringify(locationMap.get("location1")))
         res.send({ message: "Your location has been stored." });
     }
     // Question: better way than using type 'any'?
