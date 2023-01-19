@@ -24,11 +24,12 @@ type WeatherType = {
     tempArray:TempArray
 }
 
-function changeToCelsius(number:number):number{
-    return number - 273.15
+function temperatureFormatter(number:number):string{
+    const degree = number - 273.15
+    return degree.toFixed(1)+ "°C"
 }
 
-function getWindDirection(number:number):string{
+function windDirectionFormatter(number:number):string{
     var val = Math.floor((number / 22.5) + 0.5);
     var arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
     return arr[(val % 16)]
@@ -41,15 +42,15 @@ route.get('/api/forecast', async(req:Request, res:Response) =>{
     const summary = {
         "location": weather.name + ", " + weather.sys.country,
         "description": weather.weather[0].main,
-        "currentTemperature": changeToCelsius(weather.main.temp).toFixed(1) + "°C"
+        "currentTemperature": temperatureFormatter(weather.main.temp) 
     }
 
     const wind = {
         "windSpeed": weather.wind.speed +" m/s",
-        "windDirection": getWindDirection( weather.wind.deg )
+        "windDirection": windDirectionFormatter( weather.wind.deg )
     }
 
-    const tempArray=["lowest temperature: " + changeToCelsius(weather.main.temp_min).toFixed(1) + "°C", "highest temperature: " + changeToCelsius(weather.main.temp_max).toFixed(1) + "°C"]
+    const tempArray=["lowest temperature: " + temperatureFormatter(weather.main.temp_min), "highest temperature: " + temperatureFormatter(weather.main.temp_max)]
 
     const forecast:WeatherType = {summary, wind, tempArray}
     res.send(JSON.stringify(forecast))
