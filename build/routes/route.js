@@ -14,6 +14,7 @@ const express_1 = require("express");
 const postRoute_1 = require("./postRoute");
 const api_1 = require("../api");
 exports.route = (0, express_1.Router)();
+const forecastMap = new Map();
 function temperatureFormatter(number) {
     const degree = number - 273.15;
     return degree.toFixed(1) + "°C";
@@ -24,8 +25,10 @@ function windDirectionFormatter(number) {
     return arr[(val % 16)];
 }
 exports.route.get('/api/forecast', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (postRoute_1.locationMap.get(req.ip)) {
-        const data = yield (0, api_1.getWeather)(postRoute_1.locationMap.get(req.ip));
+    const key = postRoute_1.locationMap.keys().next().value;
+    //else if the key not exists, call api and return the forcast
+    if (!forecastMap.has(key)) {
+        const data = yield (0, api_1.getWeather)(postRoute_1.locationMap.get(key));
         const weather = data.body;
         const summary = {
             "location": weather.name + ", " + weather.sys.country,
@@ -38,8 +41,16 @@ exports.route.get('/api/forecast', (req, res) => __awaiter(void 0, void 0, void 
         };
         const tempArray = ["lowest temperature: " + temperatureFormatter(weather.main.temp_min), "highest temperature: " + temperatureFormatter(weather.main.temp_max)];
         const forecast = { summary, wind, tempArray };
+        forecastMap.set(key, forecast);
+        console.log("this is the key", key);
         res.send(JSON.stringify(forecast));
     }
-    else
+    //if key exists in forecastMap, print the value from the map
+    else if (forecastMap.has(key)) {
+        res.send(forecastMap.get(key));
+    }
+    //else return message 'set the location'
+    else {
         res.send({ message: "Please use the location api to store your location." });
+    }
 }));
