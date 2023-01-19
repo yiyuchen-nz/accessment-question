@@ -39,11 +39,25 @@ function windDirectionFormatter(number:number):string{
 
 route.get('/api/forecast', async(req:Request, res:Response) =>{
 
-
+    //something wrong here 
+    //key should map thru the map array to find the one that matches?
    const key = locationMap.keys().next().value
 
    //else if the key not exists, call api and return the forcast
-   if(!forecastMap.has(key)){
+   if(locationMap.size === 0){
+
+    res.send({message:"Please use the location api to store your location."});
+   
+   }
+   //if key exists in forecastMap, print the value from the map
+   else if(forecastMap.has(key)){
+    console.log("this is the key", forecastMap.size)
+    locationMap.clear();
+    res.send(forecastMap.get(key))
+    
+   }
+   //else return message 'set the location'
+   else{
     const data = await getWeather(locationMap.get(key));
 
     const weather = data.body;
@@ -58,17 +72,12 @@ route.get('/api/forecast', async(req:Request, res:Response) =>{
     };
     const tempArray=["lowest temperature: " + temperatureFormatter(weather.main.temp_min), "highest temperature: " + temperatureFormatter(weather.main.temp_max)];
     const forecast:WeatherType = {summary, wind, tempArray};
+
     forecastMap.set(key, forecast)
-    console.log("this is the key", key)
+    locationMap.clear();
+    console.log("this is the key", forecastMap.size)
     res.send(JSON.stringify(forecast));
-   }
-   //if key exists in forecastMap, print the value from the map
-   else if(forecastMap.has(key)){
-    res.send(forecastMap.get(key))
-   }
-   //else return message 'set the location'
-   else{
-    res.send({message:"Please use the location api to store your location."});
+  
    }
    
 });

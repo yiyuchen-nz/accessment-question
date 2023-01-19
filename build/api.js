@@ -8,6 +8,6 @@ const superagent_1 = __importDefault(require("superagent"));
 require("dotenv").config();
 const key = process.env.API_KEY;
 function getWeather(data) {
-    return superagent_1.default.get(`http://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${key}`);
+    return superagent_1.default.get(`https://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${key}`);
 }
 exports.getWeather = getWeather;

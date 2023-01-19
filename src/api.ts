@@ -8,7 +8,7 @@ const key= process.env.API_KEY
 export function getWeather( data:dataType):SuperAgentRequest{
 
    return request.get(
-        `http://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${key}`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${key}`
     )
     
 }
